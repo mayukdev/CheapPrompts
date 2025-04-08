@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart - CheapPrompts</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      color: #111827;
+    }
+    header {
+      background: #1e3a8a;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .back-button {
+      margin-left: auto;
+      background: #facc15;
+      color: #1e3a8a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+    .back-button:hover {
+      background: #fbbf24;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .order {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+    .order:hover {
+      transform: translateY(-3px);
+    }
+    .order p {
+      margin: 5px 0;
+      line-height: 1.4;
+    }
+    .order a, .order button {
+      color: #1e3a8a;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .order button {
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .order button:hover {
+      background: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Cart</h1>
+    <button class="back-button" onclick="window.location.href='index.html'">Back to CheapPrompts</button>
+  </header>
+  <div class="container">
+    <div id="ordersList"></div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCB9w7bkg53wU30uEH71PoAgQZHY-eZtbk",
+      authDomain: "electra-prime.firebaseapp.com",
+      databaseURL: "https://electra-prime-default-rtdb.firebaseio.com",
+      projectId: "electra-prime",
+      storageBucket: "electra-prime.appspot.com",
+      messagingSenderId: "398159720259",
+      appId: "1:398159720259:web:aeb608912c4df8091a09f6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const ordersRef = firebase.database().ref("orders");
+    const ordersListDiv = document.getElementById("ordersList");
+    
+    ordersRef.on("value", function(snapshot) {
+      ordersListDiv.innerHTML = "";
+      snapshot.forEach(function(childSnapshot) {
+        const order = childSnapshot.val();
+        let content = "<div class='order'>";
+        content += "<p><strong>" + order.buyerName + "</strong></p>";
+        content += "<p>Status: " + order.status + "</p>";
+        if(order.status === "done"){
+          content += "<p><a href='" + order.downloadLink + "' target='_blank'>Download Prompt</a></p>";
+          content += "<button onclick='giveFeedback(\"" + childSnapshot.key + "\")'>Feedback</button>";
+        } else {
+          content += "<p>Processing...</p>";
+        }
+        content += "</div>";
+        ordersListDiv.innerHTML += content;
+      });
+    });
+    
+    function giveFeedback(orderId) {
+      window.location.href = "feedback.html?orderId=" + orderId;
+    }
+  </script>
+</body>
+</html>

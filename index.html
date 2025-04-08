@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5324057599003510"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CheapPrompts - AI Prompts Store</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #0f172a;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #1e3a8a;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    nav a:hover {
+      color: #c7d2fe;
+    }
+    .hamburger {
+      display: none;
+      font-size: 26px;
+      cursor: pointer;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #1e3a8a;
+      position: fixed;
+      width: 100%;
+      top: 60px;
+      left: 0;
+      z-index: 1001;
+      animation: slideDown 0.3s ease;
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-top: 1px solid #334155;
+    }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+      .mobile-menu.show {
+        display: flex;
+      }
+    }
+    /* Hero Section */
+    .hero {
+      padding: 60px 20px;
+      text-align: center;
+      background: linear-gradient(to right, #dbeafe, #eff6ff);
+      animation: fadeIn 1s ease;
+    }
+    .hero h1 {
+      font-size: 2.5em;
+      color: #1e3a8a;
+      animation: slideDown 1s ease;
+    }
+    .hero p {
+      margin-top: 15px;
+      font-size: 1.2em;
+      animation: slideUp 1s ease;
+    }
+    .hero button {
+      margin-top: 25px;
+      padding: 12px 24px;
+      font-size: 1em;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .hero button:hover {
+      background: #3b82f6;
+    }
+    @media (min-width: 769px) {
+      .hero h1, .hero p { animation: none; }
+    }
+    /* Search Bar */
+    .search-container {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    /* Cards Container */
+    .cards-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #f1f5f9;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .color-banner {
+      height: 120px;
+      width: 100%;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card h3 {
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 0.95em;
+    }
+    .card .price {
+      margin-top: 8px;
+      font-size: 1em;
+    }
+    .card button {
+      margin-top: 12px;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .card button:hover {
+      background: #3b82f6;
+    }
+    /* Discount Styles */
+    .old-price {
+      text-decoration: line-through;
+      color: #9ca3af;
+      margin-right: 8px;
+    }
+    .new-price {
+      color: #ef4444;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .discount-badge {
+      background: #facc15;
+      color: #1e3a8a;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.85em;
+      margin-left: 8px;
+      font-weight: 600;
+    }
+    /* Why Choose Section */
+    .why-choose {
+      background: #eff6ff;
+      padding: 40px 20px;
+    }
+    .why-choose h2 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+    .why-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .why-card {
+      background: #f1f5f9;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+    }
+    .why-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 50%;
+    }
+    .why-card h3 {
+      color: #1e3a8a;
+      margin-bottom: 10px;
+    }
+    .why-card p {
+      font-size: 0.95em;
+      margin: 0;
+    }
+    /* Feedback Section */
+    .feedback-section {
+      background: #fef9c3;
+      padding: 40px 20px;
+    }
+    .feedback-section h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+    .feedback-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .feedback-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+    .feedback-card .user-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1em;
+    }
+    .feedback-card h3 {
+      margin: 5px 0;
+      font-size: 1.1em;
+      color: #1e3a8a;
+    }
+    .feedback-card p {
+      font-size: 0.9em;
+      margin: 5px 0;
+      line-height: 1.4;
+    }
+    /* Subscribe Section */
+    .subscribe {
+      background: #dbeafe;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .subscribe h2 {
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+    .subscribe form {
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .subscribe input[type="email"] {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .subscribe .checkbox-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95em;
+    }
+    .subscribe button {
+      padding: 10px;
+      font-size: 1em;
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .subscribe button:hover {
+      background: #3b82f6;
+    }
+    /* Footer Styles */
+    footer {
+      background: #1e3a8a;
+      color: white;
+      text-align: center;
+      padding: 15px 20px;
+      font-size: 0.9em;
+    }
+    footer p {
+      margin: 0;
+    }
+    /* Animations */
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes slideDown { from {transform: translateY(-20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+    @keyframes slideUp { from {transform: translateY(20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CheapPrompts</div>
+  <nav>
+    <a onclick="location.reload();">Home</a>
+    <a onclick="document.querySelector('.cards-container').scrollIntoView({behavior:'smooth'});">Promots</a>
+    <a href="cart.html">Cart</a>
+    <a href="contact.html">Contact</a>
+    <a onclick="document.querySelector('.feedback-section').scrollIntoView({behavior:'smooth'});">Feedback</a>
+    <a onclick="document.querySelector('.subscribe').scrollIntoView({behavior:'smooth'});">Subscribe Us</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </nav>
+  <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="location.reload();">Home</a>
+  <a onclick="document.querySelector('.cards-container').scrollIntoView({behavior:'smooth'});">Promots</a>
+  <a href="cart.html">Cart</a>
+  <a href="contact.html">Contact</a>
+  <a onclick="document.querySelector('.feedback-section').scrollIntoView({behavior:'smooth'});">Feedback</a>
+  <a onclick="document.querySelector('.subscribe').scrollIntoView({behavior:'smooth'});">Subscribe Us</a>
+  <a href="privacy.html">Privacy Policy</a>
+</div>
+
+<section class="hero">
+  <h1>Quality AI Prompts at Unbeatable Prices</h1>
+  <p>Supercharge your AI experience with our affordable, high-quality prompts designed for maximum output.</p>
+  <button onclick="window.location.href='#'">Browse Prompts</button>
+</section>
+
+<!-- Search Bar -->
+<div class="search-container">
+  <input type="text" id="searchBar" placeholder="Search prompts...">
+</div>
+
+<h2 style="text-align: center; color: #1e3a8a;">Featured Prompts</h2>
+<div class="cards-container">
+  <section class="cards" id="promptCards"></section>
+</div>
+
+<!-- Why Choose Section -->
+<section class="why-choose">
+  <h2>Why Choose CheapPrompt</h2>
+  <div class="cards-container">
+    <div class="why-cards">
+      <div class="why-card">
+        <img src="price.png" alt="Affordable Prices">
+        <h3>Affordable Prices</h3>
+        <p>Get premium quality prompts at prices that won't break the bank.</p>
+      </div>
+      <div class="why-card">
+        <img src="deli.png" alt="Instant Delivery">
+        <h3>Instant Delivery</h3>
+        <p>Immediate access to all purchased prompts via email.</p>
+      </div>
+      <div class="why-card">
+        <img src="up.png" alt="Regular Updates">
+        <h3>Regular Updates</h3>
+        <p>New prompts added weekly to keep your content fresh.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What Our Customers Say Section -->
+<section class="feedback-section">
+  <h2>What Our Customers Say</h2>
+  <div class="cards-container">
+    <div class="feedback-cards" id="feedbackCards"></div>
+  </div>
+</section>
+
+<!-- Subscribe Section -->
+<section class="subscribe">
+  <h2>Subscribe</h2>
+  <form id="subscribeForm">
+    <input type="email" id="subscriberEmail" placeholder="Enter your email" required>
+    <div class="checkbox-group">
+      <input type="checkbox" id="agreeTerms" required>
+      <label for="agreeTerms">I agree to subscribe</label>
+    </div>
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; <script>document.write(new Date().getFullYear())</script> CheapPrompts. All rights reserved.</p>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+  // Firebase configuration – Replace with your actual config
+  var firebaseConfig = {
+    apiKey: "AIzaSyCB9w7bkg53wU30uEH71PoAgQZHY-eZtbk",
+    authDomain: "electra-prime.firebaseapp.com",
+    databaseURL: "https://electra-prime-default-rtdb.firebaseio.com",
+    projectId: "electra-prime",
+    storageBucket: "electra-prime.appspot.com",
+    messagingSenderId: "398159720259",
+    appId: "1:398159720259:web:aeb608912c4df8091a09f6",
+    measurementId: "G-85D79V2P5P"
+  };
+  firebase.initializeApp(firebaseConfig);
+  
+  // Load prompts
+  const dbRef = firebase.database().ref("prompts");
+  const colors = ["#93c5fd", "#a78bfa", "#fca5a5", "#86efac", "#fde68a", "#fcd34d", "#c4b5fd"];
+  const cardContainer = document.getElementById('promptCards');
+  
+  function loadPublicPrompts() {
+    dbRef.on("value", function(snapshot) {
+      cardContainer.innerHTML = "";
+      snapshot.forEach(function(childSnapshot) {
+        const prompt = childSnapshot.val();
+        const card = document.createElement('div');
+        card.className = 'card';
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const originalPrice = parseFloat(prompt.priceInr);
+        const discount = parseFloat(prompt.discount) || 0;
+        const discountedPrice = discount ? (originalPrice - (originalPrice * discount / 100)).toFixed(0) : originalPrice;
+        card.innerHTML = `
+          <div class="color-banner" style="background:${randomColor}"></div>
+          <div class="card-content">
+            <h3>${prompt.title}</h3>
+            <p>${prompt.description}</p>
+            <p class="price">
+              ${discount ? `
+                <span class="old-price">₹${originalPrice}</span>
+                <span class="new-price">₹${discountedPrice}</span>
+                <span class="discount-badge">-${discount}% OFF</span>
+              ` : `₹${originalPrice}`}
+            </p>
+            <button onclick='buyPrompt("${childSnapshot.key}")'>Buy Now</button>
+          </div>
+        `;
+        cardContainer.appendChild(card);
+      });
+    });
+  }
+  loadPublicPrompts();
+  
+  function toggleMobileMenu() {
+    const menu = document.getElementById("mobileMenu");
+    menu.classList.toggle("show");
+  }
+  
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove("show");
+    });
+  });
+  
+  function buyPrompt(promptId) {
+    window.location.href = "payout.html?promptId=" + promptId;
+  }
+  
+  // Search functionality for prompts
+  const searchBar = document.getElementById("searchBar");
+  searchBar.addEventListener("keyup", function() {
+    const query = searchBar.value.toLowerCase();
+    const cards = document.querySelectorAll("#promptCards .card");
+    cards.forEach(card => {
+      const title = card.querySelector("h3").textContent.toLowerCase();
+      const description = card.querySelector("p").textContent.toLowerCase();
+      card.style.display = (title.includes(query) || description.includes(query)) ? "block" : "none";
+    });
+  });
+  
+  // Load Feedback for "What Our Customers Say"
+  const feedbackRef = firebase.database().ref("feedbacks");
+  const feedbackCardsDiv = document.getElementById("feedbackCards");
+  feedbackRef.on("value", snapshot => {
+    feedbackCardsDiv.innerHTML = "";
+    snapshot.forEach(childSnapshot => {
+      const feedback = childSnapshot.val();
+      const card = document.createElement("div");
+      card.className = "feedback-card";
+      const logoColor = colors[Math.floor(Math.random() * colors.length)];
+      card.innerHTML = `
+        <div class="user-logo" style="background:${logoColor};">
+          ${feedback.buyerName.charAt(0).toUpperCase()}
+        </div>
+        <h3>${feedback.buyerName}</h3>
+        <p>Rating: ${feedback.rating} / 5</p>
+        <p>${feedback.feedback}</p>
+      `;
+      feedbackCardsDiv.appendChild(card);
+    });
+  });
+  
+  // Subscribe functionality
+  const subRef = firebase.database().ref("subscribers");
+  document.getElementById("subscribeForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const email = document.getElementById("subscriberEmail").value;
+    const agreed = document.getElementById("agreeTerms").checked;
+    if(email && agreed) {
+      subRef.push({ email: email });
+      alert("Thank you for subscribing!");
+      document.getElementById("subscribeForm").reset();
+    }
+  });
+</script>
+</body>
+</html>

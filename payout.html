@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payout - CheapPrompts</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    header {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .prompt-details {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .prompt-details h2 {
+      margin: 10px 0;
+      color: #1e3a8a;
+    }
+    .prompt-details p {
+      margin: 5px 0;
+    }
+    .price-section {
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+    .old-price {
+      text-decoration: line-through;
+      color: #9ca3af;
+      margin-right: 8px;
+    }
+    .new-price {
+      color: #ef4444;
+      font-weight: bold;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    form input, form select, form button {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    form button {
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    form button:hover {
+      background: #3b82f6;
+    }
+    .payment-method {
+      margin-top: 10px;
+    }
+    .payment-method label {
+      margin-right: 10px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Payout</h1>
+  </header>
+  <div class="container">
+    <div class="prompt-details" id="promptDetails">
+      <!-- Prompt details (title, description, price/discount) load here -->
+    </div>
+    <!-- Billing Form -->
+    <form id="billingForm">
+      <input type="text" id="buyerName" placeholder="Your Name" required>
+      <input type="email" id="buyerEmail" placeholder="Your Email" required>
+      <div class="payment-method">
+        <label>Payment Method:</label>
+        <select id="paymentMethod">
+          <option value="redeem">Redeem Code</option>
+        </select>
+      </div>
+      <input type="text" id="redeemCode" placeholder="Enter Redeem Code" required>
+      <button type="submit">Proceed to Payment</button>
+    </form>
+  </div>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    // Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCB9w7bkg53wU30uEH71PoAgQZHY-eZtbk",
+      authDomain: "electra-prime.firebaseapp.com",
+      databaseURL: "https://electra-prime-default-rtdb.firebaseio.com",
+      projectId: "electra-prime",
+      storageBucket: "electra-prime.appspot.com",
+      messagingSenderId: "398159720259",
+      appId: "1:398159720259:web:aeb608912c4df8091a09f6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref("prompts");
+    const ordersRef = firebase.database().ref("orders");
+    
+    // Retrieve promptId from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const promptId = urlParams.get("promptId");
+    const promptDetailsDiv = document.getElementById("promptDetails");
+    
+    // Load prompt details from Firebase
+    dbRef.child(promptId).once("value").then(snapshot => {
+      const prompt = snapshot.val();
+      const originalPrice = parseFloat(prompt.priceInr);
+      const discount = parseFloat(prompt.discount) || 0;
+      let priceHtml = "";
+      if(discount > 0){
+        const discountedPrice = (originalPrice - (originalPrice * discount / 100)).toFixed(0);
+        priceHtml = `<div class="price-section">
+                       <span class="old-price">₹${originalPrice}</span>
+                       <span class="new-price">₹${discountedPrice}</span>
+                       <span class="discount-badge">-${discount}% OFF</span>
+                     </div>`;
+      } else {
+        priceHtml = `<div class="price-section">Price: ₹${originalPrice}</div>`;
+      }
+      promptDetailsDiv.innerHTML = `
+        <h2>${prompt.title}</h2>
+        <p>${prompt.description}</p>
+        ${priceHtml}
+      `;
+    });
+    
+    // When billing form is submitted, create an order in Firebase and redirect to cart.html
+    document.getElementById("billingForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const buyerName = document.getElementById("buyerName").value;
+      const buyerEmail = document.getElementById("buyerEmail").value;
+      const paymentMethod = document.getElementById("paymentMethod").value; // Currently "redeem"
+      const redeemCode = document.getElementById("redeemCode").value;
+      
+      const order = {
+        promptId: promptId,
+        buyerName: buyerName,
+        buyerEmail: buyerEmail,
+        paymentMethod: paymentMethod,
+        redeemCode: redeemCode,
+        status: "processing"
+      };
+      
+      ordersRef.push(order, function(err) {
+        if (!err) {
+          window.location.href = "cart.html";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

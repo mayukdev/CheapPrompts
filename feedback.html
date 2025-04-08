@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - CheapPrompts</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    form input, form textarea, form select {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    form button {
+      padding: 12px;
+      font-size: 1em;
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    form button:hover {
+      background: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Feedback</h1>
+    <form id="feedbackForm">
+      <input type="text" id="buyerName" placeholder="Your Name" required>
+      <textarea id="feedbackText" rows="4" placeholder="Enter your feedback..." required></textarea>
+      <select id="rating" required>
+        <option value="">Select Rating</option>
+        <option value="1">1 - Very Poor</option>
+        <option value="2">2 - Poor</option>
+        <option value="3">3 - Average</option>
+        <option value="4">4 - Good</option>
+        <option value="5">5 - Excellent</option>
+      </select>
+      <button type="submit">Submit Feedback</button>
+    </form>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCB9w7bkg53wU30uEH71PoAgQZHY-eZtbk",
+      authDomain: "electra-prime.firebaseapp.com",
+      databaseURL: "https://electra-prime-default-rtdb.firebaseio.com",
+      projectId: "electra-prime",
+      storageBucket: "electra-prime.appspot.com",
+      messagingSenderId: "398159720259",
+      appId: "1:398159720259:web:aeb608912c4df8091a09f6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const ordersRef = firebase.database().ref("orders");
+    const feedbackRef = firebase.database().ref("feedbacks");
+    
+    // Get orderId from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get("orderId");
+    
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const buyerName = document.getElementById("buyerName").value;
+      const feedbackText = document.getElementById("feedbackText").value;
+      const rating = document.getElementById("rating").value;
+      
+      const feedbackData = {
+        orderId: orderId,
+        buyerName: buyerName,
+        feedback: feedbackText,
+        rating: rating,
+        timestamp: Date.now()
+      };
+      
+      feedbackRef.push(feedbackData, function(error) {
+        if (!error) {
+          alert("Feedback submitted successfully!");
+          window.location.href = "index.html";
+        } else {
+          alert("Error submitting feedback. Please try again.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Process Payment</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    h1 { text-align: center; }
+    form { display: flex; flex-direction: column; gap: 10px; }
+    form input, form select, form button { padding: 10px; font-size: 1em; }
+    form button { background: #1e3a8a; color: #fff; border: none; cursor: pointer; }
+    form button:hover { background: #3b82f6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Process Payment</h1>
+    <div id="orderDetails"></div>
+    <form id="paymentForm">
+      <input type="text" id="downloadLink" placeholder="Enter Download Link" required>
+      <select id="paymentStatus">
+        <option value="processing">Processing</option>
+        <option value="done">Payment Done</option>
+        <option value="not_done">Payment Not Done</option>
+      </select>
+      <button type="submit">Submit Payment Status</button>
+    </form>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCB9w7bkg53wU30uEH71PoAgQZHY-eZtbk",
+      authDomain: "electra-prime.firebaseapp.com",
+      databaseURL: "https://electra-prime-default-rtdb.firebaseio.com",
+      projectId: "electra-prime",
+      storageBucket: "electra-prime.appspot.com",
+      messagingSenderId: "398159720259",
+      appId: "1:398159720259:web:aeb608912c4df8091a09f6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const ordersRef = firebase.database().ref("orders");
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get("orderId");
+    const orderDetailsDiv = document.getElementById("orderDetails");
+    ordersRef.child(orderId).once("value").then(snapshot => {
+      const order = snapshot.val();
+      orderDetailsDiv.innerHTML = "<p><strong>" + order.buyerName + "</strong></p><p>" + order.buyerEmail + "</p><p>Redeem Code: " + order.redeemCode + "</p>";
+    });
+    document.getElementById("paymentForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const downloadLink = document.getElementById("downloadLink").value;
+      const paymentStatus = document.getElementById("paymentStatus").value;
+      ordersRef.child(orderId).update({
+        downloadLink: downloadLink,
+        status: paymentStatus
+      }, function(err){
+        if(!err){
+          alert("Payment status updated!");
+          window.location.href = "adminpay.html";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
